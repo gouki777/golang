@@ -1,0 +1,95 @@
+################
+package main   #
+import "fmt"   #
+################
+1.GO语言if语句  
+func main() {
+	var a int = 10
+//if语句中的变量，只在if内有效。跳出{}就失效了
+    if a:=1; a >0 {
+    	fmt.Println(a)
+    }
+   fmt.Println(a) 
+}
+   fmt.Println(a) 
+}
+2.GO语言中的for语句
+func main() {
+	var a int = 1
+	for { a++;
+		if a >=3 { break;} //如果a 大于或者等于3跳出循环
+	fmt.Println(a);
+	}
+}
+3.GO语言for i++
+func main() {
+	var a int = 1
+	for i :=1; i<5; i++ { 
+	    a++
+            fmt.Println(a)
+        }
+	fmt.Println("Over");
+	}
+4.GO语言switch case
+func main() {
+   var a int =1
+   switch {
+   case a==1:
+      fmt.Println("a=1")
+         fallthrough         //fallthrough继续执行
+      case a>0 && a<5:       // && 和 多条件
+         fmt.Println("5>a>1")
+      default:
+         fmt.Println("None")
+   }     
+}
+
+5.控制语句
+break    语句	经常用于中断当前 for 循环或跳出 switch 语句
+continue 语句	跳过当前循环的剩余语句，然后继续进行下一轮循环。
+goto     语句	将控制转移到被标记的语句。
+
+5.1 GO语言continue语法 跳过当前循环-到标签LABEL1剩余循环上
+func main() {
+LABEL1:
+   for i :=1; i <10; i++ {
+      fmt.Println(i)
+    for true  {
+    	continue LABEL1         //跳过当前循环
+        fmt.Printf("这是无限循环。\n");
+    }
+   }
+ fmt.Println("OK")
+ }
+5.2 GO语言goto语法将控制转移到标签LABEL1上
+ func main() {
+ for {
+   for i :=1; i <10; i++ {
+      fmt.Println(i)
+      if i>3 {
+         goto LABEL1;
+      }
+   }
+ }
+ LABEL1:
+ fmt.Println("OK")
+}
+
+5.3 GO语言break语法将控制转移到标签LABEL1上
+func main() {
+LABEL1:
+ for {
+   for i :=1; i <10; i++ {
+      fmt.Println(i)
+      if i>3 {
+         break LABEL1;
+      }
+   }
+ }
+ fmt.Println("OK")
+}
+
+
+
+
+
