@@ -1,0 +1,72 @@
+go没有class
+使用type <name>{}
+
+
+
+type persion struct {
+   Name string
+   Age  int
+   Contact struct {       //匿名结构
+      Phone,city string
+   }
+}
+func main() {
+   a:=persion{Name:"suns",Age:19}   
+   a.Contact.city="bj"
+   a.Contact.Phone="110"
+   fmt.Println(a)
+ }
+ ============================
+ type persion struct {
+   string       //匿名字段
+   int
+}
+func main() {
+   a:=persion{"suns",19}
+   fmt.Println(a)
+ }
+====ab对比 要一致======
+type persion struct {
+   Name string
+   Age  int
+}
+
+func main() {
+   a:=persion{Name:"suns",Age:19}
+   b:=persion{Name:"suns",Age:20}
+   fmt.Println(b==a)
+ }
+======嵌入========
+type ccc struct {
+   abc int
+}
+type aaa struct {
+   ccc
+   Name string
+   Age  int
+}
+type bbb struct {
+   ccc
+   Name string
+   Age  int
+}
+
+func main() {
+   a:=aaa{Name:"suns",Age:19,ccc:ccc{abc:1}}   //ccc赋值方法ccc:ccc{abc:1}
+   b:=bbb{Name:"suns",Age:20,ccc:ccc{abc:1}}
+   a.abc=100    //嵌入
+   fmt.Println(a,b)
+ }
+===============
+type A struct {
+   B
+   //Name string
+}
+type B struct {
+   Name string
+}
+
+func main() {
+   a :=A{Name:"A",B:B{Name:"B"}}
+   fmt.Println(a.Name,a.B.Name)
+ }

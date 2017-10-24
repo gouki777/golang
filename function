@@ -1,0 +1,97 @@
+函数function
+go函数不支持嵌套、重载和默认参数
+但是支持以下特性
+
+无需声明原型，不定长度变参，多返回值，命名返回值参数
+匿名函数、闭包
+
+定义函数使用关键字 func 且左大哭哦汗不能另起一行
+函数也可以作为一种类型使用
+
+1.函数类型使用
+func A() {                 
+//func A (int,int,int ) {} 或者func A (a,b,c int) 命名返回值参数
+//func A (a ... int) {}  不定长参数 a....后面元素都是Int形
+//func A (b string, a ... int) 可以这样不定长变参不能 先...再 定义其他函数
+	fmt.Println("FUNC A")
+}
+
+func main() {
+	a :=A
+	a()
+}
+2.匿名函数
+func main() {
+	a :=func() {             //a:= 一个匿名函数
+	   fmt.Println("FUNC A")
+	}
+	a()
+}
+3.闭包
+func main() {
+	f := closure(10)               //把f=10引入闭包 =x
+	fmt.Println(f(1))              //把f(1)引入 =y   
+	fmt.Println(f(2))              //把f(2)引入 =y
+}
+
+func closure(x int) func(int) int {
+	return func(y int) int {
+		return x+y                       
+	}
+}
+------------闭包过程------------
+func main() {
+	f := closure(10)
+	fmt.Println(f(1))
+	fmt.Println(f(2))
+}
+
+func closure(x int) func(int) int {
+	fmt.Println(x)                      //验证X值
+	fmt.Printf("%p\n", &x)
+	return func(y int) int {
+		fmt.Printf("%p\n", &x)
+		return x + y
+	}
+}
+4.defer操作
+
+func main() {
+ fmt.Println("a")
+ defer fmt.Println("b")  
+ defer fmt.Println("c")   //defer 逆序先调用 结果为A C B
+}
+
+5.golang异常panic和恢复recover用法
+func main() {
+ A()
+ B()
+ C()
+}
+ func A() {
+   fmt.Println("Func A")
+ }
+ func B() {
+   defer func () {      //defer恢复panic
+      if err :=recover();
+      err !=nil {
+         fmt.Println("Recover in B")
+      }
+   }()
+      panic("Func B")
+ }
+ func C() {
+   fmt.Println("Func C")
+ }
+
+
+
+
+
+
+
+
+
+
+
+

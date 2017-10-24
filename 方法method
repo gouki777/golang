@@ -1,0 +1,50 @@
+方法method
+Go中没有class，但是依然有Method
+
+=======================
+type A struct {
+   Name string
+}
+type B struct {
+   Name string
+}
+
+func main() {
+   a:=A{}
+   a.print()
+   b:=B{}
+   b.print()
+   fmt.Println(a.Name，b.Name)  //查看导出值
+ }
+ func (a *A)print() {   //*A指针传递到方法块中
+   a.Name="AA"
+   fmt.Println("A")
+ }
+ func (b B)print() {  //没用指针b.name结束方法后值无效了
+   b.Name="BB"
+   fmt.Println("B")
+ }
+ =======方法可以访问共有字段和私有字段=========
+ type TZ int
+func main() {
+   var a TZ
+   a.Print()
+}
+func (a *TZ) Print() {
+   fmt.Println("TZ")
+}
+
+==========
+type A struct {
+   name string          //私有字段，外部的包想访问需要Name
+}                       //main外部包可以访问
+
+func main() {
+   a:=A{}
+   a.Print()
+   fmt.Println(a.name)   //可以读取私有字段
+}
+func (a *A) Print() {
+   a.name="123"
+   fmt.Println(a.name)
+}

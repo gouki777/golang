@@ -1,0 +1,61 @@
+Go 语言Map(集合)
+Map 是一种无序的键值对的集合。Map 最重要的一点是通过 key 来快速检索数据，key 类似于索引，指向数据的值。
+Map 是一种集合，所以我们可以像迭代数组和切片那样迭代它。不过，Map 是无序的，我们无法决定它的返回顺序，
+这是因为 Map 是使用 hash 表来实现的。
+MAP必须是支持 ==或者！=比较运算符，不可以是函数。map or slice
+MAP查找比线性搜索快很多，但是比使用索引访问数据的类型慢100备（尽量使用slice和数组）
+MAP使用make()创建，支持：=这种简写方式
+
+make([keytype]valueType,cap),cap表示容量，可省略
+
+map的2种写法
+func main() {
+   var m map[int]string = map[int]string{}
+  fmt.Println(m)
+}
+或
+func main() {
+   m := map[int]string{}
+  fmt.Println(m)
+}
+
+func main() {
+   m := map[int]string{}
+   m[1]="ok"               #键值
+  fmt.Println(m)
+}
+
+迭代操作
+for k，v:=range map{...}   #map为k   slice为i
+for i，v:=range map{...}   #map为k   slice为i
+
+map赋值+迭代操作
+import (
+  "fmt"
+  "sort"
+)
+func main() {
+m := map[int]string{1:"a",2:"b",3:"c",4:"d",5:"e"} 
+s := make([]int,len(m))
+    i := 0
+    for k,_:=range m {     //K赋值到迭代里
+    	s[i] = k
+    	i++
+    }
+    sort.Ints(s)           //排序模块
+    fmt.Println(s)
+}
+
+练习题，key和v 数值互换
+import (
+  "fmt"
+)
+func main() {
+m1 := map[int]string{1:"a",2:"b",3:"c"} 
+fmt.Println(m1)
+m2 := make(map[string]int)
+for k,v:= range m1 {
+	m2[v]=k
+}
+fmt.Println(m2)
+}
