@@ -1,0 +1,21 @@
+package main
+import (
+  "fmt"
+  "io/ioutil"
+  "os"
+)
+
+ var aaa string = "C:\\translate.conf"  //全局变量设置aaa
+
+func main() {
+finfo, err := os.Stat(aaa)              //打开文件aaa如果错误，输出no file,并跳出循环
+if err != nil {
+    fmt.Println("no such file or dir")
+    return; }                          
+if finfo.IsDir() {
+    //fmt.Println("it's a file") 
+    } //else { fmt.Println("it's a directory")}
+
+   ra, _ := ioutil.ReadFile(aaa)        //打开文件aaa读取输出
+   fmt.Printf("%s", ra)
+}

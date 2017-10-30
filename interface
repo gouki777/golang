@@ -1,0 +1,37 @@
+接口interface
+接口是一个或多个方法的签名的集合
+只要某个类型拥有该接口的所有方法签名，即算现实该接口，
+无需显示声明实现了那个接口，这称为Structural Typing
+接口只有方法声明，没有实现，没有数据字段
+接口可以匿名嵌入其它接口，或嵌入到结构中
+
+
+type empty interface {
+}
+ type USB interface {
+ 	Name() string
+ 	Connect()
+ }
+ type PhoneConnecter struct {
+    name string	
+ }
+ func (pc PhoneConnecter) Name() string {
+ 	return pc.name
+ }
+
+ func (pc PhoneConnecter) Connect() {
+ 	fmt.Println("Connect:", pc.name)
+ }
+func main() {
+	var a USB
+	a = PhoneConnecter{"PhoneConnecter"}
+    a.Connect()
+    Disconect(a)
+}
+func Disconect(usb USB) {
+	if pc, ok:=usb.(PhoneConnecter); ok {
+		fmt.Println("Disconect",pc.name)
+		return
+	}
+	fmt.Println("Unknown Disconect")
+}

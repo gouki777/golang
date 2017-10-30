@@ -1,0 +1,45 @@
+package main
+import "fmt"
+func Count(ch chan int) {
+ch <- 1
+fmt.Println("Counting")
+}
+func main() {
+chs := make([]chan int, 10)
+for i := 0; i < 10; i++ { 
+/*定义了一个包含10个channel的数组（名为 chs ）
+并把数组中的每个channel分配给10个不同的goroutine
+在每个goroutine的 Add() 函数完成后，我们通过 ch <- 1 语句向对应的channel中写入一个数据,
+在这个channel被读取前，这个操作是阻塞的。在所有的goroutine启动完成后，
+我们通过 <-ch 语句从10个channel中依次读取数据。在对应的channel写入
+数据前，这个操作也是阻塞的。这样，我们就用channel实现了类似锁的功能，进而保证了所有
+goroutine完成后主函数才返回。是不是比共享内存的方式更简单、优雅呢 */
+chs[i] = make(chan int)
+go Count(chs[i])
+}
+for _, ch := range(chs) {
+<-ch
+}
+}
+--------------------------------------------------
+基本语法
+一般channel的声明形式为：
+var chanName chan ElementType
+与一般的变量声明不同的地方仅仅是在类型之前加了 chan 关键字。 ElementType 指定这个
+channel所能传递的元素类型。举个例子，我们声明一个传递类型为 int 的channel：
+var ch chan int
+或者，我们声明一个 map ，元素是 bool 型的channel:
+var m map[string] chan bool
+上面的语句都是合法的。
+定义一个channel也很简单，直接使用内置的函数 make() 即可：
+ch := make(chan int)
+这就声明并初始化了一个 int 型的名为 ch 的channel。
+在channel的用法中，最常见的包括写入和读出。将一个数据写入（发送）至channel的语法
+很直观，如下：
+ch <- value
+向channel写入数据通常会导致程序阻塞，直到有其他goroutine从这个channel中读取数据。从
+channel中读取数据的语法是
+value := <-ch
+如果channel之前没有写入数据，那么从channel中读取数据也会导致程序阻塞，直到channel
+中被写入数据为止。我们之后还会提到如何控制channel只接受写或者只允许读取，即单向
+channel。
