@@ -89,6 +89,20 @@ LABEL1:
  fmt.Println("OK")
 }
 
+5.4条件判断
+func main() {
+        if *get_ip == "AAA" {
+                get_external()
+        }
+
+        if *get_ip == "BBB" {
+                get_internal()
+        }
+       if ( *get_ip != "AAA" || *get_ip != "BBB") {
+       fmt.Println("Usage of ./getmyip --get_ip=(external|internal)")
+       }
+}
+
 
 
 

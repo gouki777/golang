@@ -1,0 +1,47 @@
+1.获取http状态码
+package main
+//获取http状态码
+import (
+   "fmt"
+   "net/http"
+   "net/url"
+)
+func GET() {
+      u, _ := url.Parse("http://www.baidu.com/")
+   q := u.Query()
+   u.RawQuery = q.Encode()
+   res, err := http.Get(u.String())
+   if err != nil {
+      fmt.Println("0")
+      return
+   }
+   resCode := res.StatusCode
+   res.Body.Close()
+   if err != nil {
+      fmt.Println("0")
+      return
+   }
+   fmt.Printf("%d\r\n", resCode)
+}
+func main() {
+    GET()
+}
+2.获取网页源码
+package main
+import (
+   "net/http"
+   "fmt"
+   "io/ioutil"
+)
+func main()  {
+   get()
+}
+func get(){
+resp,err :=    http.Get("http://www.baidu.com")
+   if err!=nil {
+      fmt.Println("error=",err,";")
+   }
+   defer resp.Body.Close()
+   b,err:=ioutil.ReadAll(resp.Body)
+   fmt.Print(string(b))
+}
