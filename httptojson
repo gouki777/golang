@@ -1,0 +1,49 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+)
+
+type Repositories struct {
+	Count    int         `json:"count"`
+	Next     string      `json:"next"`
+	Previous interface{} `json:"previous"`
+	Results  []Results   `json:"results"`
+}
+
+type Results struct {
+	User           string `json:"user"`
+	Name           string `json:"name"`
+	Namespace      string `json:"namespace"`
+	RepositoryType string `json:"repository_type"`
+	Status         int    `json:"status"`
+	Description    string `json:"description"`
+	IsPrivate      bool   `json:"is_private"`
+	IsAutomated    bool   `json:"is_automated"`
+	CanEdit        bool   `json:"can_edit"`
+	StarCount      int    `json:"star_count"`
+	PullCount      int    `json:"pull_count"`
+	IsMigrated     bool   `json:"is_migrated"`
+}
+
+func main() {
+	url := "https://hub.docker.com/v2/repositories/mirrorgooglecontainers/?page_size=100"
+	repo := Repositories{}
+	rep, _ := http.Get(url)
+	//	rep, err := http.Get(url)   //报错提示
+	//if err != nil {
+	//	fmt.Println("error=", err, ";")
+	//}
+	rep.Header.Add("accept", "application/json")       //json格式 header
+	rep.Header.Add("content-type", "application/json") //json格式 header
+	imageinfo, _ := ioutil.ReadAll(rep.Body)
+	defer rep.Body.Close()
+	json.Unmarshal([]byte(imageinfo), &repo)
+	//fmt.Println(repo.Count)
+	for _, v := range repo.Results {
+		fmt.Println(v.Name)
+	}
+}
