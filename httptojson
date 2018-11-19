@@ -40,7 +40,7 @@ func main() {
 	rep.Header.Add("accept", "application/json")       //json格式 header
 	rep.Header.Add("content-type", "application/json") //json格式 header
 	imageinfo, _ := ioutil.ReadAll(rep.Body)
-	defer rep.Body.Close()
+	defer rep.Body.Close()                             //延迟执行内容（收尾工作）
 	json.Unmarshal([]byte(imageinfo), &repo)
 	//fmt.Println(repo.Count)
 	for _, v := range repo.Results {
