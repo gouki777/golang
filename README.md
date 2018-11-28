@@ -280,6 +280,219 @@ func main() {
 }
 </pre>
 **二维数组**  
-二维数组是最简单的多维数组，二维数组本质上是由一维数组组成的。二维数组定义方式如下  
+二维数组是最简单的多维数组，二维数组本质上是由一维数组组成的。二维数组定义方式如下    
+二维数组通过指定坐标来访问。如数组中的行索引与列索引，例如：  
+int val = a[2][3]    
+以上实例访问了二维数组 val 第三行的第四个元素。  
+二维数组可以使用循环嵌套来输出元素：
+<pre>
+package main
+import "fmt"
+func main() {
+   /* 数组 - 5 行 2 列*/
+   var a = [5][2]int{ {0,0}, {1,2}, {2,4}, {3,6},{4,8}}
+   var i, j int
+   /* 输出数组元素 */
+   for  i = 0; i < 5; i++ {
+      for j = 0; j < 2; j++ {
+         fmt.Printf("a[%d][%d] = %d\n", i,j, a[i][j] )
+      }
+   }
+}
+</pre>
+####Go 语言指针####
+Go 语言中指针是很容易学习的，Go 语言中使用指针可以更简单的执行一些任务。  
+接下来让我们来一步步学习 Go 语言指针。  
+我们都知道，变量是一种使用方便的占位符，用于引用计算机内存地址。  
+Go 语言的取地址符是 &，放到一个变量前使用就会返回相应变量的内存地址。  
+以下实例演示了变量在内存中地址：  
+<pre>
+package main
+import "fmt"
+func main() {
+   var a int = 10   
+   fmt.Printf("变量的地址: %x\n", &a  )
+}
 
+执行以上代码输出结果为：
+变量的地址: 20818a220
+</pre>
+现在我们已经了解了什么是内存地址和如何去访问它。接下来我们将具体介绍指针。  
+**什么是指针**  
+一个指针变量指向了一个值的内存地址。  
+类似于变量和常量，在使用指针前你需要声明指针。指针声明格式如下：  
+**如何使用指针**  
+指针使用流程：  
+定义指针变量。  
+为指针变量赋值。  
+访问指针变量中指向地址的值。  
+在指针类型前面加上 * 号（前缀）来获取指针所指向的内容。  
+<pre>
+package main
+import "fmt"
+func main() {
+   var a int= 20   /* 声明实际变量 */
+   var ip *int        /* 声明指针变量 */
+   ip = &a  /* 指针变量的存储地址 */
+   fmt.Printf("a 变量的地址是: %x\n", &a  )
+   /* 指针变量的存储地址 */
+   fmt.Printf("ip 变量储存的指针地址: %x\n", ip )
+   /* 使用指针访问值 */
+   fmt.Printf("*ip 变量的值: %d\n", *ip )
+}
 
+以上实例执行输出结果为：
+a   变量的地址是: 20818a220
+ip  变量储存的指针地址: 20818a220
+*ip 变量的值: 20
+</pre>
+**Go 空指针**  
+当一个指针被定义后没有分配到任何变量时，它的值为 nil。  
+nil 指针也称为空指针。  
+nil在概念上和其它语言的null、None、nil、NULL一样，都指代零值或空值。  
+一个指针变量通常缩写为 ptr。
+查看以下实例：
+<pre>
+package main
+import "fmt"
+func main() {
+   var  ptr *int
+   fmt.Printf("ptr 的值为 : %x\n", ptr  )
+}
+
+以上实例输出结果为：
+ptr 的值为 : 0
+
+空指针判断：
+if(ptr != nil)     /* ptr 不是空指针 */
+if(ptr == nil)     /* ptr 是空指针 */
+</pre>
+**Go 语言指针数组**  
+在我们了解指针数组前，先看个实例，定义了长度为 3 的整型数组：  
+有一种情况，我们可能需要保存数组，这样我们就需要使用到指针。  
+以下声明了整型指针数组：  
+<pre>
+var ptr [MAX]*int;  
+</pre>
+ptr 为整型指针数组。因此每个元素都指向了一个值。以下实例的三个整数将存储在指针数组中：
+<pre>
+package main
+import "fmt"
+const MAX int = 3
+func main() {
+   a := []int{10,100,200}
+   var i int
+   for i = 0; i < MAX; i++ {
+      fmt.Printf("a[%d] = %d\n", i, a[i] )
+   }
+}
+
+以上代码执行输出结果为：
+a[0] = 10
+a[1] = 100
+a[2] = 200
+</pre>
+####Go 语言结构体####
+Go 语言中数组可以存储同一类型的数据，但在结构体中我们可以为不同项定义不同的数据类型。  
+结构体是由一系列具有相同类型或不同类型的数据构成的数据集合。  
+结构体表示一项记录，比如保存图书馆的书籍记录，每本书有以下属性：  
+**- Title ：标题  
+- Author ： 作者  
+- Subject：学科  
+- ID：     书籍ID**    
+
+**定义结构体**  
+结构体定义需要使用 type 和 struct 语句。  
+struct 语句定义一个新的数据类型，结构体有中有一个或多个成员。  
+type 语句设定了结构体的名称。  
+结构体的格式如下：
+<pre>
+type struct_variable_type struct {
+   member definition;
+   member definition;
+   ...
+   member definition;
+}
+</pre>
+一旦定义了结构体类型，它就能用于变量的声明，语法格式如下：
+<pre>
+variable_name := structure_variable_type {value1, value2...valuen}
+或
+variable_name := structure_variable_type { key1: value1, key2: value2..., keyn: valuen}
+</pre>
+实例如下：
+<pre>
+package main
+import "fmt"
+type Books struct {
+   title   string
+   author  string
+   subject string
+   book_id int
+}
+func main() {
+    // 创建一个新的结构体
+    fmt.Println(Books{"Go 语言", "www.runoob.com", "Go 语言教程", 6495407})
+    // 也可以使用 key => value 格式
+    fmt.Println(Books{title: "Go 语言", author: "www.runoob.com", subject: "Go 语言教程", book_id: 6495407})
+    // 忽略的字段为 0 或 空
+   fmt.Println(Books{title: "Go 语言", author: "www.runoob.com"})
+}
+
+输出结果为：
+{Go 语言 www.runoob.com Go 语言教程 6495407}
+{Go 语言 www.runoob.com Go 语言教程 6495407}
+{Go 语言 www.runoob.com  0}
+</pre>
+**访问结构体成员**  
+如果要访问结构体成员，需要使用点号 . 操作符，格式为：  
+结构体.成员名"   
+结构体类型变量使用 struct 关键字定义，实例如下：  
+<pre>
+package main
+import "fmt"
+type Books struct {
+   title string
+   author string
+   subject string
+   book_id int
+}
+
+func main() {
+   var Book1 Books        /* 声明 Book1 为 Books 类型 */
+   /* book 1 描述 */
+   Book1.title = "Go 语言"
+   Book1.author = "www.runoob.com"
+   Book1.subject = "Go 语言教程"
+   Book1.book_id = 6495407
+
+   /* 打印 Book1 信息 */
+   fmt.Printf( "Book 1 title : %s\n", Book1.title)
+   fmt.Printf( "Book 1 author : %s\n", Book1.author)
+   fmt.Printf( "Book 1 subject : %s\n", Book1.subject)
+   fmt.Printf( "Book 1 book_id : %d\n", Book1.book_id)
+}
+
+以上实例执行运行结果为：
+Book 1 title : Go 语言
+Book 1 author : www.runoob.com
+Book 1 subject : Go 语言教程
+Book 1 book_id : 6495407
+</pre>
+####Go语言切片(Slice)####
+Go 语言切片是对数组的抽象。  
+Go 数组的长度不可改变，在特定场景中这样的集合就不太适用，Go中提供了一种灵活，功能强悍的内置类型切片("动态数组"),与数组相比切片的长度是不固定的，可以追加元素，在追加时可能使切片的容量增大。
+定义切片  
+你可以声明一个未指定大小的数组来定义切片：  
+<pre>
+var identifier []type
+</pre>
+切片不需要说明长度。
+或使用make()函数来创建切片:  
+<pre>
+var slice1 []type = make([]type, len)
+</pre>
+也可以简写为
+<pre>
+slice1 := make([]type, len)
+</pre>
