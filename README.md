@@ -498,6 +498,8 @@ slice1 := make([]type, len)
 len() 和 cap() 函数  
 切片是可索引的，并且可以由 **len() 方法获取长度**。  
 切片提供了计算容量的方法 **cap() 可以测量切片最长可以达到多少**  
+**切片提供了计算容量的函数 cap() 可以测量切片最长可以达到多少：它等于切片的长度 + 数组除切片之外的长度。如果 s 是一个切片，cap(s) 就是从 s[0] 到数组末尾的数组长度。切片的长度永远不会超过它的容量，所以对于 切片 s 来说该不等式永远成立：0 <= len(s) <= cap(s)**    
+优点 因为切片是引用，所以它们不需要使用额外的内存并且比使用数组更有效率，所以在 Go 代码中 切片比数组更常用。  
 以下为具体实例：
 <pre>
 package main
@@ -547,4 +549,35 @@ len=1 cap=1 slice=[0]
 len=2 cap=2 slice=[0 1]
 len=5 cap=6 slice=[0 1 2 3 4]
 len=5 cap=12 slice=[0 1 2 3 4]
+</pre>
+####Go 语言范围(Range)####
+Go 语言中 range 关键字用于 **for 循环中迭代数组(array)、切片(slice)、通道(channel)或集合(map)的元素**。  
+在数组和切片中它返回元素的索引和索引对应的值，在集合中返回 key-value 对的 key 值。  
+KV 数据结构
+<pre>
+package main
+import "fmt"
+func main() {
+	nums := []int{2, 3, 4}
+	sum := 0
+	for _, num := range nums {
+		sum += num
+		fmt.Println("index:", num)
+	}
+	fmt.Println("sum:", sum)
+///K V 结构数组遍历
+	kvs := []int{2, 3, 4, 5}
+	for k, v := range kvs {
+		fmt.Printf("K is: %d -> V is: %d\n", k, v)
+	}
+}
+//-------输出结构-------
+index: 2
+index: 3
+index: 4
+sum: 9
+K is: 0 -> V is: 2
+K is: 1 -> V is: 3
+K is: 2 -> V is: 4
+K is: 3 -> V is: 5
 </pre>
