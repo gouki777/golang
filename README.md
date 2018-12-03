@@ -550,10 +550,10 @@ len=2 cap=2 slice=[0 1]
 len=5 cap=6 slice=[0 1 2 3 4]
 len=5 cap=12 slice=[0 1 2 3 4]
 </pre>
-####Go 语言范围(Range)####
-Go 语言中 range 关键字用于 **for 循环中迭代数组(array)、切片(slice)、通道(channel)或集合(map)的元素**。  
-在数组和切片中它返回元素的索引和索引对应的值，在集合中返回 key-value 对的 key 值。  
-KV 数据结构
+####Go 语言范围(Range)####  
+Go 语言中 range 关键字用于 **for 循环中迭代数组(array)、切片(slice)、通道(channel)或集合(map)的元素**。    
+在数组和切片中它返回元素的索引和索引对应的值，在集合中返回 key-value 对的 key 值。    
+KV 数据结构  
 <pre>
 package main
 import "fmt"
