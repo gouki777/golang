@@ -571,6 +571,11 @@ func main() {
 		fmt.Printf("K is: %d -> V is: %d\n", k, v)
 	}
 }
+// K V string
+	name1 := []string{"aaaa", "bbbb", "cccc", "dddd", "eeee"}
+	for k, v := range name1 {
+		fmt.Println("Number", k, v)
+	}
 //-------输出结构-------
 index: 2
 index: 3
@@ -580,4 +585,83 @@ K is: 0 -> V is: 2
 K is: 1 -> V is: 3
 K is: 2 -> V is: 4
 K is: 3 -> V is: 5
+Number 0 aaaa
+Number 1 bbbb
+Number 2 cccc
+Number 3 dddd
+Number 4 eeee
+</pre>
+####Go 语言Map(集合)####
+map 是一种特殊的数据结构：一种元素对（pair）的无序集合，pair 的一个元素是 key，对应的另一个元素是 value，所以这个结构也称为关联数组或字典。这是一种快速寻找值的理想结构：给定 key，对应的 value 可以迅速定位。  
+map 这种数据结构在其他编程语言中也称为字典（Python）、hash 和 HashTable 等。  
+**概念**  
+map 是引用类型，可以使用如下声明：
+<pre>
+var map1 map[keytype]valuetype
+var map1 map[string]int
+
+map 的初始化：var map1 = make(map[keytype]valuetype)
+或者简写为：     map1 := make(map[keytype]valuetype)
+-----------------------------
+（[keytype] 和 valuetype 之间允许有空格，但是 gofmt 移除了空格）
+</pre>
+在声明的时候不需要知道 map 的长度，map 是可以动态增长的。  
+未初始化的 map 的值是 nil。  
+key 可以是任意可以用 == 或者 != 操作符比较的类型，比如 string、int、float。  
+所以数组、切片和结构体不能作为 key   
+(译者注：含有数组切片的结构体不能作为 key，只包含内建类型的 struct 是可以作为 key 的），但是指针和接口类型可以。如果要用结构体作为 key 可以提供 Key() 和 Hash() 方法，这样可以通过结构体的域计算出唯一的数字或者字符串的 key。  
+map 传递给函数的代价很小：在 32 位机器上占 4 个字节，64 位机器上占 8 个字节，  
+无论实际上存储了多少数据。**通过 key 在 map 中寻找值是很快的，比线性查找快得多**，但是仍然比从数组和切片的**索引中直接读取要慢 100 倍**；所以如果你很在乎性能的话还是建议用切片来解决问题。  
+**map 容量**  
+和数组不同，map 可以根据新增的 key-value 对动态的伸缩，因此它不存在固定长度或者最大限制。但是你也可以选择标明 map 的初始容量 capacity，  
+就像这样：make(map[keytype]valuetype, **cap**)。  
+例如：
+<pre>
+map2 := make(map[string]float32, 100)
+</pre>
+
+<pre>
+package main
+import "fmt"
+
+func main() {
+	var value int
+	var isPresent bool
+
+	map1 := make(map[string]int)
+	map1["New Delhi"] = 55
+	map1["Beijing"] = 20
+	map1["Washington"] = 25
+	value, isPresent = map1["Beijing"]
+	if isPresent {
+		fmt.Printf("The value of \"Beijing\" in map1 is: %d\n", value)
+	} else {
+		fmt.Printf("map1 does not contain Beijing")
+	}
+    //如果你只是想判断某个 key 是否存在而不关心它对应的值到底是多少，你可以这么做：    或者和 if 混合使用：
+	if _, ok := map1["Beijing"]; ok {
+		fmt.Println("Hello world  gogogogogogogogogoogo")
+	} else {
+		fmt.Printf("map1 111111111111111111111111111")
+	}
+	value, isPresent = map1["Paris"]
+	fmt.Printf("Is \"Paris\" in map1 ?: %t\n", isPresent)
+	fmt.Printf("Value is: %d\n", value)
+
+	// delete an item:从 map1 中删除 key1：如果 key1 不存在，该操作不会产生错误。
+	delete(map1, "Washington")
+	value, isPresent = map1["Washington"]
+	if isPresent {
+		fmt.Printf("The value of \"Washington\" in map1 is: %d\n", value)
+	} else {
+		fmt.Println("map1 does not contain Washington")
+	}
+}
+======================================
+go run mapifok.go
+The value of "Beijing" in map1 is: 20
+Hello world gogogogogogogogogoogo
+Is "Paris" in map1 ?: false
+Value is: 0
+map1 does not contain Washington
 </pre>
