@@ -1,0 +1,44 @@
+package main
+
+import "fmt"
+
+func main() {
+	//简单赋值
+	a, b, c := 10, 20, 30
+	fmt.Printf("a= %d b= %d c= %d\n", a, b, c)
+	//交换2个变量赋值
+	var tmp int
+	tmp = a
+	a = b
+	b = tmp
+	fmt.Printf("a= %d b= %d c= %d\n", a, b, c)
+	//交换2个变量值简单写法
+	i, j := 10, 20
+	i, j = j, i //交换赋值
+	fmt.Printf("i= %d j= %d\n", i, j)
+	//_匿名变量，丢弃数据不处理, _匿名变量配合函数返回值使用，才有优势
+	tmp, _ = i, j
+	fmt.Println("tmp is value", tmp)
+    //匿名函数赋值
+	var e, f, g int
+	e, f, g = test()
+	fmt.Printf("e = %d, f = %d g = %d\n", e, f, g)
+	_, _, g = test()
+	fmt.Printf("Only G value is %d", g)
+/////////////////////////////////////////////
+	//不同类型变量的声明（定义）
+	//	var a int
+	//	var b float64
+	//var (      //可以自动推导类型
+	//	a int =1
+	//	b float64 = 2.1
+	//)
+	var (
+		a = 1
+		b = 2.1
+	)
+	fmt.Println("a and b", a, b)
+}
+func test() (a, b, c int) {
+	return 1, 2, 3
+}

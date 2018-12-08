@@ -1,0 +1,19 @@
+package main
+
+import "fmt"
+
+func main() {
+
+	const (
+		a = iota
+		b = iota
+		c = iota
+	)
+	fmt.Printf("a=%d,b=%d,c=%d\n", a, b, c)
+	const (
+		i      = iota       //0
+		j1, j2 = iota, iota //1
+		k      = iota       //2
+	)
+	fmt.Printf("i=%d, j1=%d, j2=%d, k=%d", i, j1, j2, k)
+}

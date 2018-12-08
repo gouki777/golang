@@ -1,0 +1,22 @@
+package main
+import "fmt"
+func main() {
+	//变量 程序运行时，可以改变，声明var
+	//常量 程序运行时，不能改变，声明const
+	const a int = 10
+	fmt.Println("a =", a)
+	const b = 5 //没有使用:=,会自动判断类型
+	fmt.Printf("b type is %T\n", b)
+	fmt.Println("b value is", b)
+	const c = 5.1 //没有使用:=,会自动判断类型
+	fmt.Printf("c type is %T\n", c)
+	fmt.Println("c value is", c)
+	///////////////////////////
+	const ( //可以自动推导类型
+		//	i int 10
+		i, j = 1, 3.3
+	)
+	fmt.Println("i and j", i, j)
+
+
+}
