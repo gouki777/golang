@@ -3,7 +3,7 @@ Go 语言
 hello go world!<br>
 ----
 <p>2017-10-15 begin</p>
-![Gopher image](doc/gopher/fiveyears.jpg)
+![Gopher image](fiveyears.jpg)  
 ###Go语言数据类型###
 在 Go 编程语言中，数据类型用于声明函数和变量。  
 数据类型的出现是为了把数据分成所需**内存大小不同的数据**，编程的时候需要用大数据的时候才需要申请大内存，就可以充分利用内存。  
