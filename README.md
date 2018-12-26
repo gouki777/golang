@@ -3,7 +3,7 @@ Go 语言
 hello go world!<br>
 ----
 <p>2017-10-15 begin</p>
-<img src="https://i.imgur.com/DzT7drw.jpg">   
+  
 ### Go语言数据类型 ###
 <pre>
 在 Go 编程语言中，数据类型用于声明函数和变量。    
