@@ -578,6 +578,16 @@ func main() {
 	for k, v := range name1 {
 		fmt.Println("Number", k, v)
 	}
+
+这两个都是仅 for 循环内部可见的局部变量。
+如果你只关心值，可以这么使用：
+for _, value := range map1 {
+    ...
+}
+如果只想获取 key，你可以这么使用：
+for key := range map1 {
+    fmt.Printf("key is: %d\n", key)
+}
 //-------输出结构-------
 index: 2
 index: 3
@@ -642,7 +652,7 @@ func main() {
 	}
     //如果你只是想判断某个 key 是否存在而不关心它对应的值到底是多少，你可以这么做：    或者和 if 混合使用：
 	if _, ok := map1["Beijing"]; ok {
-		fmt.Println("Hello world  gogogogogogogogogoogo")
+		fmt.Println("Hello world")
 	} else {
 		fmt.Printf("map1 111111111111111111111111111")
 	}
@@ -662,8 +672,9 @@ func main() {
 ======================================
 go run mapifok.go
 The value of "Beijing" in map1 is: 20
-Hello world gogogogogogogogogoogo
+Hello world
 Is "Paris" in map1 ?: false
 Value is: 0
 map1 does not contain Washington
 </pre>
+

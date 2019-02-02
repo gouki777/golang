@@ -1,0 +1,22 @@
+package main
+import (
+    "fmt"
+    "time"
+    "sync"
+)
+func main() {
+    var a = 0
+    var lock sync.Mutex
+    for i := 0; i < 100; i++ {
+        go func(idx int) {
+            lock.Lock()
+            defer lock.Unlock()
+            a += 1
+            fmt.Printf("goroutine %d, a=%d\n", idx, a)
+        }(i)
+    }
+    // 等待 1s 结束主程序
+    // 确保所有协程执行完
+    time.Sleep(time.Second)
+    //修改后执行的结果总是1000个不重服的值。而且使用go语言的lock锁一般不会出现忘了解锁的情况，因类其紧跟锁定的就是defer Unlock
+}

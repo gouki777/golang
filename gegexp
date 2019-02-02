@@ -1,0 +1,15 @@
+package main
+import (
+    "fmt"
+    "regexp"
+)
+// 判断在 b 中能否找到正则表达式 pattern 所匹配的子串 
+// pattern：要查找的正则表达式 
+// b：要在其中进行查找的 []byte 
+// matched：返回是否找到匹配项 
+// err：返回查找过程中遇到的任何错误 
+// 此函数通过调用 Regexp 的方法实现
+// func Match(pattern string, b []byte) (matched bool, err error) 
+func main() {
+  fmt.Println(regexp.Match("[a-zA-Z]+", []byte("Hello World!"))) 
+}
