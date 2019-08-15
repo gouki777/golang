@@ -607,7 +607,8 @@ Number 4 eeee
 map 是一种特殊的数据结构：一种元素对（pair）的无序集合，pair 的一个元素是 key，对应的另一个元素是 value，所以这个结构也称为关联数组或字典。这是一种快速寻找值的理想结构：给定 key，对应的 value 可以迅速定位。  
 map 这种数据结构在其他编程语言中也称为字典（Python）、hash 和 HashTable 等。  
 **概念**  
-map 是引用类型，可以使用如下声明：
+map 是引用类型，可以使用如下声明：  
+`注意 不要使用 new，永远用 make 来构造 map`  
 <pre>
 var map1 map[keytype]valuetype
 var map1 map[string]int
