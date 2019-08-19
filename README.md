@@ -678,4 +678,13 @@ Is "Paris" in map1 ?: false
 Value is: 0
 map1 does not contain Washington
 </pre>
+#### Go 包 package ####
+像 fmt、os 等这样具有常用功能的内置包在 Go 语言中有 150 个以上，它们被称为标准库
+**regexp 包**
+我们将在字符串中对正则表达式进行匹配。
+如果是简单模式，使用 Match 方法便可：
+```
+ok, _ := regexp.Match(pat, []byte(searchIn))
+```
+
 
