@@ -732,8 +732,8 @@ func main() {
 			fmt.Printf("goroutine %d, a=%d\n Unlock", idx, a)
 		}(i)
 	}
-	// 等待 1s 结束主程序;确保所有协程执行完
+// 等待 1s 结束主程序;确保所有协程执行完
 	time.Sleep(time.Second)
-	//修改后执行的结果总是100个不重服的值。而且使用go语言的lock锁一般不会出现忘了解锁的情况，因类其紧跟锁定的就是defer Unlock
+//修改后执行的结果总是100个不重服的值。而且使用go语言的lock锁一般不会出现忘了解锁的情况，因类其紧跟锁定的就是defer Unlock
 }
 ```
