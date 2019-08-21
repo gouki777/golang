@@ -706,9 +706,34 @@ func main() {
 ```
 高级应用详见：[REGEXP复杂应用](https://github.com/gouki777/golang/blob/master/regexp)
 
-**锁和 sync 包**
+**锁和 sync 包**  
 在一些复杂的程序中，通常通过不同线程执行不同应用来实现程序的并发。当不同线程要使用同一个变量时，经常会出现一个问题：无法预知变量被不同线程修改的顺序！(这通常被称为资源竞争，指不同线程对同一变量使用的竞争) 显然这无法让人容忍，那我们该如何解决这个问题呢？  
 经典的做法是一次只能让一个线程对共享变量进行操作。当变量被一个线程改变时 (临界区)，我们为它上锁，直到这个线程执行完成并解锁后，其他线程才能访问它。  
 特别是我们之前章节学习的 map 类型是不存在锁的机制来实现这种效果 (出于对性能的考虑)，所以 `map 类型是非线程安全的。当并行访问一个共享的 map 类型的数据，map 数据将会出错。`  
 在 Go 语言中这种锁的机制是通过 sync 包中 Mutex 来实现的。sync 来源于 "synchronized" 一词，这意味着线程将有序的对同一变量进行访问  
 sync.Mutex 是一个互斥锁，它的作用是守护在临界区入口来确保同一时间只能有一个线程进入临界区  
+```
+package main
+
+import (
+	"fmt"
+	"sync"
+	"time"
+)
+
+func main() {
+	var a = 0
+	var lock sync.Mutex
+	for i := 0; i < 100; i++ {
+		go func(idx int) {
+			lock.Lock()
+			defer lock.Unlock()
+			a += 1
+			fmt.Printf("goroutine %d, a=%d\n Unlock", idx, a)
+		}(i)
+	}
+	// 等待 1s 结束主程序;确保所有协程执行完
+	time.Sleep(time.Second)
+	//修改后执行的结果总是100个不重服的值。而且使用go语言的lock锁一般不会出现忘了解锁的情况，因类其紧跟锁定的就是defer Unlock
+}
+```
