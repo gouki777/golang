@@ -685,7 +685,9 @@ map1 does not contain Washington
 如果是简单模式，使用 Match 方法便可：   
 ```
 ok, _ := regexp.Match(pat, []byte(searchIn))
-简单引用
+```
+简单引用  
+```
 package main
 import (
     "fmt"
