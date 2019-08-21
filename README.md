@@ -681,10 +681,27 @@ map1 does not contain Washington
 #### Go 包 package ####
 像 fmt、os 等这样具有常用功能的内置包在 Go 语言中有 150 个以上，它们被称为标准库
 **regexp 包**
-我们将在字符串中对正则表达式进行匹配。
-如果是简单模式，使用 Match 方法便可：
+我们将在字符串中对正则表达式进行匹配。  
+如果是简单模式，使用 Match 方法便可：   
 ```
 ok, _ := regexp.Match(pat, []byte(searchIn))
+简单引用
+package main
+import (
+    "fmt"
+    "regexp"
+)
+// 判断在 b 中能否找到正则表达式 pattern 所匹配的子串 
+// pattern：要查找的正则表达式 
+// b：要在其中进行查找的 []byte 
+// matched：返回是否找到匹配项 
+// err：返回查找过程中遇到的任何错误 
+// 此函数通过调用 Regexp 的方法实现
+// func Match(pattern string, b []byte) (matched bool, err error) 
+func main() {
+  fmt.Println(regexp.Match("[a-zA-Z]+", []byte("Hello World!"))) 
+}
 ```
+高级应用详见：[REGEXP复杂应用](https://github.com/gouki777/golang/blob/master/regexp)
 
 
