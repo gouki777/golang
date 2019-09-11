@@ -1,7 +1,7 @@
 一.从控制台读取输入
 我们如何读取用户的键盘（控制台）输入呢？从键盘和标准输入 os.Stdin 读取输入，
 最简单的办法是使用 fmt 包提供的 Scan 和 Sscan 开头的函数。具体代码如下
-<pre>
+
 package main
 import "fmt"
 var (
@@ -22,10 +22,10 @@ func main() {
 	
     fmt.Println("From the Input we read: ", f, i, ThirdNames)
 }
-</pre>
+
 二.小试牛刀
 　　以下是一个和用户进行交互的程序，将用户输入的字符串和数字进行打印，相当于一个echo的一个功能，具体需要打印的类型需要自行修改。
-<pre>
+
 package main
 import (
     "bufio"
@@ -53,4 +53,3 @@ func main()  {
         fmt.Printf("您输入的第一个参数是：·\033[31;1m%v\033[0m·,输入的第二个参数是··\033[31;1m%v\033[0m·.\n",String,Number)
     }
 }
-</pre>
