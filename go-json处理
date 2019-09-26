@@ -1,0 +1,32 @@
+package main
+
+import (
+	"encoding/json"
+	"log"
+)
+
+func main() {
+	data := `{
+  "name1": [
+    {
+      "id": 0,
+      "name": "criss"
+    }
+  ],
+  "name": [
+    {
+      "id": 1,
+      "name": "sunny"
+    }
+  ]
+}`
+	type User struct {
+		ID   int    //`json:"id"`
+		Name string //`json:"name"`
+	}
+	dataMap := make(map[string][]User)
+	json.Unmarshal([]byte(data), &dataMap)
+	for k, v := range dataMap {
+		log.Printf(`%v,%v`, k, v)
+	}
+}
