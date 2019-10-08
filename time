@@ -1,0 +1,26 @@
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	//golang默认就是local.time，如果特殊可以自定义时区
+	t := time.Now().Local().Format("2006-01-02 15:04:05")
+	fmt.Println(t)
+
+	//使用扩展
+	fmt.Println(time.Now())
+	// 输出: 2019-04-30 14:41:59.661602 +0800 CST m=+0.000225294
+
+	// 获取当前unix时间戳（秒）
+	fmt.Println(time.Now().Unix()) // 输出: 1556615702
+
+	// 获取当前unix时间戳（毫秒）
+	fmt.Println(time.Now().UnixNano() / 1e6) // 输出: 1556615702009
+
+	// 获取当前unix时间戳（纳秒）
+	fmt.Println(time.Now().UnixNano()) // 输出: 1556615702009257000
+
+}
