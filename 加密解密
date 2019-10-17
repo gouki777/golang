@@ -1,0 +1,21 @@
+通过网络传输的数据必须加密，以防止被 hacker（黑客）读取或篡改，并且保证发出的数据和收到的数据检验和一致。
+鉴于 Go 母公司的业务，我们毫不惊讶地看到 Go 的标准库为该领域提供了超过 30 个的包：
+hash 包：实现了 adler32、crc32、crc64 和 fnv 校验；
+crypto 包：实现了其它的 hash 算法，比如 md4、md5、sha1 等。以及完整地实现了 aes、blowfish、rc4、rsa、xtea 等加密算法。
+下面的示例用 sha1 和 md5 计算并输出了一些校验值。
+
+package main
+// hash_md5.go
+import (
+	"crypto/md5"  //or sha1
+	"fmt"
+	"io"
+)           
+   
+func main() {
+	hasher := md5.New()     //or sha1.New
+	b := []byte{}
+	io.WriteString(hasher, "test")
+	fmt.Printf("Result: %x\n", hasher.Sum(b))
+	fmt.Printf("Result: %d\n", hasher.Sum(b))
+}
