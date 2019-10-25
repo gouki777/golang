@@ -1,0 +1,263 @@
+Go 语言 select 语句
+select 是 Go 中的一个控制结构，类似于用于通信的 switch 语句。每个 case 必须是一个通信操作，要么是发送要么是接收。
+select 随机执行一个可运行的 case。如果没有 case 可运行，它将阻塞，直到有 case 可运行。一个默认的子句应该总是可运行的。
+语法
+Go 编程语言中 select 语句的语法如下：
+```
+select {
+    case communication clause  :
+       statement(s);      
+    case communication clause  :
+       statement(s); 
+    /* 你可以定义任意数量的 case */
+    default : /* 可选 */
+       statement(s);
+}
+```
+以下描述了 select 语句的语法：
+每个 case 都必须是一个通信
+所有 channel 表达式都会被求值
+所有被发送的表达式都会被求值
+如果任意某个通信可以进行，它就执行，其他被忽略。
+如果有多个 case 都可以运行，Select 会随机公平地选出一个执行。其他不会执行。 
+否则：
+如果有 default 子句，则执行该语句。
+如果没有 default 子句，select 将阻塞，直到某个通信可以运行；Go 不会重新对 channel 或值进行求值。
+
+select 实例
+Go 语言选择（select）可以等待多个通道操作。将 goroutine 和 channel 与 select 结合是 Go 语言的一个强大功能。看起来可能和 switch 相似，但是并不是。
+对于这个示例，将选择两个通道。
+每个通道将在一段时间后开始接收值，以模拟阻塞在并发 goroutines 中执行 RPC 操作。我们将使用 select 同时等待这两个值，在每个值达到时打印它们。
+执行实例程序得到的值是 one ， 然后是 two 。注意，总执行时间只有 1-2 秒 Sleeps 同时执行
+```
+package main
+import (
+    "fmt"
+    "time"
+)
+
+func main(){
+    // channel
+    c1 := make (chan string)
+    c2 := make (chan string)
+
+    go func(){
+        time.Sleep(time.Second * 1)
+        c1 <- "ONE"
+    }()
+
+    go func(){
+        time.Sleep(time.Second * 2)
+        c2 <- "TWO"
+    }()
+
+    for i := 0 ; i < 2 ; i ++ {
+        select {
+            case msg1 := <-c1:
+            fmt.Println("received~one",msg1)
+            case msg2 := <-c2:
+            fmt.Println("received~two",msg2)
+        }
+    }
+}
+```
+
+超时（timeouts）实例
+超时对于连接到外部资源或在不需要绑定执行时间的程序很重要。在 Go 编程中由于使用了通道和选择 （select），实现超时是很容易和优雅的。
+在这个示例中，假设正在执行一个外部调用，2秒后在通道 C1 上返回其结果。
+这里是 select 实现超时。res := <-c1 等待结果和 <-Time 。等待在超时 1 秒后发送一个值。由于选择继续准备好第一个接收，如果超时超过允许的 1 秒，则将按照超时情况处理。
+如果允许更长的超时，如： 3s ，那么从 c2 的接收将成功，这里将会打印。
+运行此程序显示第一个操作超时和第二个操作超时。
+使用此选择超时模式需要通过通道传达结果。这是一个好主意，因为其他重要的 Go 功能是基于渠道和 Select。现在看看下面的两个例子：计时器和ticker 。
+```
+package main
+import (
+    "time"
+    "fmt" 
+)
+func main(){
+    c1 := make(chan string,1)
+    go func(){
+        time.Sleep(time.Second *2)
+        c1 <- "result 1"
+    }()
+    select {
+        case res := <-c1:
+        fmt.Println(res)
+        case <-time.After(time.Second *1):
+        fmt.Println("timeout 1")
+    }
+    c2 := make(chan string , 1)
+    go func() {
+        time.Sleep(time.Second * 2)
+        c2 <- "result 2"
+    }()
+    select {
+        case res := <-c2:
+        fmt.Println(res)
+        case <-time.After(time.Second *3):
+        fmt.Println("timeout2")
+    }
+}
+```
+非阻塞通道操作实例
+通道的基本发送和接受都阻塞。但是，可以使用 select 和 default 子句来实现非阻塞发送，接收，甚至非阻塞多路选择( select )。
+这里会是一个非阻塞接收。如果消息上有可用的值，则选择将使用该值的 <-message 。如果不是，它会立即采取默认情况。
+可以使用多个上面的默认子句来实现多路非阻塞选择（select）。这里尝试对消息(message) 和信号（signals） 的非阻塞接收。
+```
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main(){
+    messages := make(chan string)
+    signals  := make(chan bool)
+
+    go func() {
+        messages <- "test"
+    }()
+
+    time.Sleep(time.Second * 1)
+    select{
+        case msg := <-messages:
+            fmt.Println("Received message",msg)
+        default:
+            fmt.Println("no message received")
+    }
+
+    msg := "hi"
+
+    select {
+        case messages<-msg:
+            fmt.Println("sent message",msg)
+        default:
+            fmt.Println("no message sent")
+    }
+
+    select {
+        case msg := <- messages:
+            fmt.Println("received message",msg)
+        case sig := <-signals:
+            fmt.Println("received signals",sig)
+        default:
+            fmt.Println("no activity")
+    }
+}
+```
+go 关闭通道实例
+关闭通道表示不会再发送值。这对于将完成通讯到通道的接收器是很有用的。
+在这个例子中，我们将使用一个作业通道来完成从 main goroutine 到 worker goroutine 的工作。当没有更多的工作时，则将关闭工作通道。
+这里是工作程序 goroutine。它反复从j的工作接收 more := <- jobs 。在这种特殊的 2 值形式的接收中。
+如果作业已关闭并且接受到的通道中的所有值，则 more 的值将为 false。当已经完成了所有的工作时，使用这个通知。
+这会通过作业通道向工作线程发送 3 个作业，然后关闭它。
+```
+package main
+
+import "fmt"
+
+func main(){
+    jobs := make(chan int,5)
+    done := make(chan bool)
+
+    go func() {
+        for {
+            j , more := <- jobs
+            if more{
+                fmt.Println("received job",j)
+            }else {
+                fmt.Println("received all jobs")
+                done <- true
+                return
+            }
+        }
+    }()
+
+    for j:=1 ; j<= 3 ; j++{
+        jobs <- j
+        fmt.Println("send job",j)
+    }
+
+    //关闭通道
+    close(jobs)
+    fmt.Println("send all jobs")
+
+    //
+    fmt.Println(<-done)
+}
+```
+//以上例程中实际输出的时候遇到输出为以下样子：
+```
+send job 1
+send job 2
+received job 1
+received job 2
+received job 3
+send job 3
+send all jobs
+received all jobs
+true
+```
+个人猜想是因为 goroutine 中执行的线程调度的时候快于 主要 routine。
+所以出现以上输出，但是就是实际执行过程的时候一定是接收到发送过后再输出。
+
+go 通道范围实例
+在前面的例子中，我们已经看到了 for 和 range 语句如何为基于数据结构提供迭代。还可以使用此语法对从通道接收的值进行迭代。
+此范围在从队列中接收到的每个元素上进行迭代。因为关闭了上面的通道，迭代在接收到 2 个元素后终止。
+这个示例还可以关闭非空信道，但仍接收剩余值。
+```
+package main
+
+import "fmt"
+
+func main(){
+    //存放两个值在通道中
+
+    queue := make(chan string,2)
+    queue <- "one"
+    queue <- "two"
+
+    close(queue)
+
+    for elem:=range queue{
+        fmt.Println(elem)
+    }
+}
+```
+go 计时器实例
+我们经常想在将来某个时间点执行Go 代码，或者在某个时间间隔重复执行。 Go 内置计时器和自动接收器功能使这两项任务变得容易。我们先看看定时器，然后再看看行情。
+定时器代表未来的一个事件。可告诉定时器您想要等待多长时间，它提供一个通道，得到通知的时候执行相应程序。在这个示例中，计时器将等待2 秒钟。
+<-timer1.C 阻塞定时器的通道 C ，直到它发送一个指示定时器超时的值。
+如果只是想等待，可以使用 time.Sleep 。定时器可能起作用的一个原因是在定时器到期之前取消定时器。
+第一个定时器将在启动程序后 2s 后过期，但第二个定时器应该在它到期之前停止。
+```
+package main
+
+import (
+    "time"
+    "fmt"
+)
+
+func main(){
+    timer1 := time.NewTimer(time.Second * 2)
+
+    <-timer1.C
+
+    fmt.Println("Timer 1 expired")
+
+    timer2 := time.NewTimer(time.Second)
+
+    go func() {
+        <- timer2.C
+        fmt.Println("Timer 2 expired")
+    }()
+
+    stop2 := timer2.Stop()
+
+    if stop2{
+        fmt.Println("Timer 2 stoped")
+    }
+}
+```
