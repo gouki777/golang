@@ -1,0 +1,45 @@
+package main
+
+import (
+	"fmt"
+
+	"github.com/gocolly/colly"            //colly
+	"github.com/gocolly/colly/extensions" //随机UA REF扩展
+	"github.com/gocolly/redisstorage"     //入库redis
+)
+
+func main() {
+	url := "https://hackerspaces.org/"
+	c := colly.NewCollector(
+		colly.AllowedDomains("wiki.hackerspaces.org", "hackerspaces.org"), //过滤domain
+	)
+	extensions.RandomUserAgent(c) //随机url
+	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
+		link := e.Attr("href")
+		c.Visit(e.Request.AbsoluteURL(link))
+	})
+	c.OnError(func(r *colly.Response, err error) {      //错误输出处理
+		fmt.Println("Request URL:", r.Request.URL, "failed with response:", r, "\nError:", err)
+	})
+	//redis入库
+	storage := &redisstorage.Storage{
+		Address:  "10.21.8.18:6379",
+		Password: "",
+		DB:       0,
+		Prefix:   "job",
+	}
+
+	err := c.SetStorage(storage)
+	if err != nil {
+		panic(err)
+	}
+	//响应回调输出log
+	c.OnResponse(func(r *colly.Response) {
+		//log.Println("Cookies:", c.Cookies(r.Request.URL.String()))
+		fmt.Printf("%s %d\n", r.Request.URL, r.StatusCode)
+	})
+
+	// Start scraping on https://hackerspaces.org 启动
+	c.Visit(url)
+	c.Wait()
+}
