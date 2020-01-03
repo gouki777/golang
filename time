@@ -24,3 +24,12 @@ func main() {
 	fmt.Println(time.Now().UnixNano()) // 输出: 1556615702009257000
 
 }
+
+const (
+    Nanosecond  Duration = 1
+    Microsecond          = 1000 * Nanosecond    //纳秒
+    Millisecond          = 1000 * Microsecond   //毫秒
+    Second               = 1000 * Millisecond   //秒
+    Minute               = 60 * Second   //分
+    Hour                 = 60 * Minute   //小时
+)
