@@ -1,9 +1,0 @@
-package main
-import (
-	"fmt"
-	"os"
-)
-func main() { //调用环境变量赋值
-	goenv := os.Getenv("GOPATH")
-	fmt.Println(goenv)
-}
