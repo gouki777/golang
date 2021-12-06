@@ -70,3 +70,36 @@ func main() {
 	}
 	os.Stdout.Write(b)
 }
+
+//解码json使用json.Unmarshal()函数可以对一组数据进行JSON格式的解码
+//func Unmarshal(data []byte, v interface{}) error
+//示例解析到结构体
+type Person struct {
+  Age       int    `json:"age,string"`
+  Name      string `json:"name"`
+  Niubility bool   `json:"niubility"`
+}
+func main() {
+  b := []byte(`{"age":"18","name":"5lmh.com","marry":false}`) // 假数据
+  var p Person
+  err := json.Unmarshal(b, &p)
+  if err != nil {
+  fmt.Println(err)
+  }
+  fmt.Println(p)
+}
+
+//
+//示例通过map生成json
+func main() {
+    student := make(map[string]interface{})
+    student["name"] = "5lmh.com"
+    student["age"] = 18
+    student["sex"] = "man"
+    b, err := json.Marshal(student)
+    if err != nil {
+        fmt.Println(err)
+    }
+    fmt.Println(b)
+}
+
