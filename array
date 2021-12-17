@@ -50,4 +50,16 @@ func main() {
    /* 使用指针访问值 */
    fmt.Printf("*ip 变量的值: %d\n", *(ip) )
 }
+5.遍历数组最大值
+func main() {
+	numList := []int{2, 4, 6, 7, 8, 10, 3, 6, 0, 1} //数组自定义
+	kv := numList[0]
+    for  i := 1; i <len(numList); i++ {
+		if  kv < numList[i] {
+            kv = numList[i]
+		}
+	}
+	fmt.Printf("Max Value %v",kv)
+}
+
  
